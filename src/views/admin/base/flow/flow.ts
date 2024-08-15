@@ -1,12 +1,12 @@
 import jsPlumb from "jsplumb";
 import { Modal } from "ant-design-vue";
 import { onContextMenu } from "./tool";
-const {deleteProcess}  = useProcess();
+const { deleteProcess } = useProcess();
 async function initFlowChart(initData, callback) {
   await nextTick(); // 确保DOM更新完成
   let data = toRaw(initData);
-  if(!data.list||data.list.length == 0){
-    return ;
+  if (!data.list || data.list.length == 0) {
+    return;
   }
 
   // 动态维护一个节点列表，用于后续的拖拽操作，并将他返回
@@ -33,7 +33,7 @@ async function initFlowChart(initData, callback) {
     ],
     PaintStyle: { stroke: "#1d39c4", strokeWidth: 2 }, // 设置线条颜色和宽度
     EndpointStyle: { radius: 5, fill: "#1d39c4" }, // 设置端点样式
-    HoverPaintStyle: { stroke: "#f5222d", strokeWidth: 3 }, // 鼠标悬停时的线条样式
+    HoverPaintStyle: { stroke: "#c92a2a", strokeWidth: 3 }, // 鼠标悬停时的线条样式
     ArrowType: "arrow", // 添加箭头，可选值有 "arrow", "diamond", 等
     ArrowSize: 10, // 箭头大小
   });
@@ -49,8 +49,8 @@ async function initFlowChart(initData, callback) {
       if (index != -1) {
         // 获取当前被删除的节点
         const delNode = nodeList[index];
-        console.log(delNode)
-        await deleteProcess({id:delNode.id,flow_id:delNode.flow_id})
+        console.log(delNode);
+        await deleteProcess({ id: delNode.id, flow_id: delNode.flow_id });
         let displayNodeList = nodeList;
         displayNodeList.splice(index, 1);
         callback(displayNodeList);
@@ -260,7 +260,7 @@ async function initFlowChart(initData, callback) {
 
       nodeList[index] = sourceNode;
       displayNodeList = nodeList;
-      console.log("displayNodeList",displayNodeList);
+      console.log("displayNodeList", displayNodeList);
       callback(displayNodeList);
     });
 
@@ -283,7 +283,7 @@ async function initFlowChart(initData, callback) {
 
         nodeList[index] = sourceNode;
         displayNodeList = nodeList;
-        console.log("displayNodeList",displayNodeList);
+        console.log("displayNodeList", displayNodeList);
         callback(displayNodeList);
       });
     });

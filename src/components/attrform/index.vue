@@ -446,7 +446,6 @@ export default {
     watch(() => props.attrs, (newVal, oldVal) => {
       if (newVal.process != oldVal.process) {
         formState.value = newVal
-        console.log("=>formState",formState.value)
         fillSubmitState(newVal)
         initBase(newVal)
         initExprs()

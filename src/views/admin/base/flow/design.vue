@@ -16,7 +16,7 @@
                 :class="'node' + (node.process_to ? ' source-node' : '')" :id="'node-' + node.id" :style="node.style">
                 <div class="flex justify-center align-items-center node-element" :id="`menu-${node.id}`">
                     <HuluIcon :id="`node-line-${node.id}-pointer`" fontSize="28px" :name="node.icon" />
-                    <span class="font-bold text-md">{{ node.process_name }}</span>
+                    <span class="font-bold text-lg">{{ node.process_name }}</span>
                     <a-button type="primary" style="color:#ffffff;z-index:20;" @click="setProcess(node)" shape="circle">
                         <FormOutlined class="node-setting"/>
                         <!-- <SettingOutlined  /> -->
