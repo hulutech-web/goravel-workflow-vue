@@ -343,8 +343,8 @@
               <div class="flex-4" style="width:80px;">字体颜色</div>
               <input type="text" v-model="submitState.style_color"
                 class="w-24 h-8 border-none outline-none bg-gray-100 rounded-sm px-3 mx-3">
-              <div v-for="(c, ind) in colors" :key="ind" :style="{ background: `${c}` }" class="h-8 w-8 cursor-pointer hover:scale-105"
-                @click="setColor(c)"></div>
+              <div v-for="(c, ind) in colors" :key="ind" :style="{ background: `${c}` }"
+                class="h-8 w-8 cursor-pointer hover:scale-105" @click="setColor(c)"></div>
 
             </div>
             <div class="flex mt-3 items-center">
@@ -441,7 +441,7 @@ export default {
     })
     const formState = ref(props.attrs)
 
-    
+
 
     watch(() => props.attrs, (newVal, oldVal) => {
       if (newVal.process != oldVal.process) {
@@ -710,9 +710,8 @@ export default {
     }
     // 定义一组颜色
     const colors = ref([
-      '#F54A00','#00F5D4','#7300F5','#4AA397','#757526',
-      '#EE0000', '#FF8C00', '#FFD700', '#e84393',
-      '#00CD00', '#0000CD', '#8B008B', '#808080', '#008B8B', '#006400'])
+      '#FFA500', '#800080', '#FFC0CB', '#A0522D', '#6B8E23', '#483D8B', '#D2691E', '#9400D3',
+      '#228B22', '#7B68EE', '#B22222', '#8B4726', '#556B2F', '#4B0082', '#9932CC', '#6A5ACD'])
 
     const setColor = (color) => {
       submitState.value.style_color = color
