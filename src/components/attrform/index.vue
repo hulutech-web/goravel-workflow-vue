@@ -130,15 +130,22 @@
 
             <div>
               <span>授权人员：</span>
-              <input type="text" v-model="submitState.range_emp_ids" :disabled="disableAuto"
-                style="width:240px;outline: none; border-radius:4px;font-size: 18px; padding: 0 8px; border: 2px solid #ddd;">
+              <a-select v-model:value="submitState.range_emp_ids" mode="tags" placeholder="选择人员" style="width:400px;">
+                <a-select-option v-for="(i,ind) in submitState.range_emp_ids" :key="ind" :value="i">
+                  {{ submitState.range_emp_text[ind] }}
+                </a-select-option>
+              </a-select>
               <a-button type="primary" @click="selPer" :disabled="disableAuto">选择</a-button>
             </div>
 
             <div class="mt-3">
               <span>授权部门：</span>
-              <input :disabled="disableAuto" type="text" v-model="submitState.range_dept_ids"
-                style="width:240px;outline: none; border-radius:4px;font-size: 18px; padding: 0 8px; border: 2px solid #ddd;">
+
+              <a-select v-model:value="submitState.range_dept_ids" mode="tags" placeholder="选择部门" style="width:400px;">
+                <a-select-option v-for="(i,ind) in submitState.range_dept_ids" :key="ind" :value="i">
+                  {{ submitState.range_dept_text[ind] }}
+                </a-select-option>
+              </a-select>
               <a-button :disabled="disableAuto" type="primary" @click="selDep">选择</a-button>
             </div>
 
@@ -421,11 +428,11 @@ export default {
       child_flow_id: "",
       child_after: "",
       range_emp_ids: [],
-      range_emp_text: "",
+      range_emp_text: [],
       range_dept_ids: [],
-      range_dept_text: "",
+      range_dept_text: [],
       range_role_ids: [],
-      range_role_text: "",
+      range_role_text: [],
       process_mode: "",
       con_sign: "",
       con_sign_vsb: "",
@@ -503,7 +510,7 @@ export default {
       submitState.value.range_emp_ids = attrs.select_emps.map(item => item.id)
       submitState.value.range_emp_text = attrs.select_emps.map(item => item.name)
       submitState.value.range_dept_ids = attrs.select_depts.map(item => item.id)
-      submitState.value.range_dept_text = attrs.select_depts.map(item => item.name)
+      submitState.value.range_dept_text = attrs.select_depts.map(item => item.dept_name)
     }
 
     const open = ref(false)
@@ -516,7 +523,7 @@ export default {
       }
     }
 
-    const disableAuto = ref(true)
+    const disableAuto = ref(props.attrs.sys == '0')
     const changeAuto = (val) => {
       if (val == '-1001') {
         disableAuto.value = true
@@ -592,10 +599,13 @@ export default {
       // Check here to configure the default column
       loading: false,
     });
-    const onSelectChange = selectedRowKeys => {
+    const onSelectChange = (selectedRowKeys, selectedRows) => {
       console.log('selectedRowKeys changed: ', selectedRowKeys);
       state.selectedRowKeys = selectedRowKeys;
       submitState.value.range_dept_ids = selectedRowKeys
+      // 获取被选择的选项数据
+      console.log(selectedRows)
+      submitState.value.range_dept_text = selectedRows.map(item=>item.dept_name)
     };
     // #endregion 权限
 
