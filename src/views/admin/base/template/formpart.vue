@@ -67,7 +67,7 @@
 
 import useRulesStore from '@/store/useRulesStore.ts'
 import { watch } from 'vue';
-const { loadTemplateForm, storeTemplateForm, updateTemplateForm, deleteTemplateForm, showTemplateForm } = useTemplateForm();
+const { storeTemplateForm, updateTemplateForm, showTemplateForm } = useTemplateForm();
 const { loadTemplates } = useTemplate();
 const rulesStore = useRulesStore();
 const tid = ref()
@@ -172,6 +172,9 @@ const saveField = async () => {
         formEditRef.value.validate()
     }
 }
+defineExpose({
+    loadTemplateOpts
+})
 </script>
 
 <style></style>

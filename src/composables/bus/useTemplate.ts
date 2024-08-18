@@ -19,6 +19,19 @@ export default () => {
         data:data
     })
   }
+  const updateTemplate = async (data)=>{
+    return await http.request({
+        url:`template/${data.id}`,
+        method: "PUT",
+        data:data
+    })
+  }
+  const deleteTemplate = async (data)=>{
+    return await http.request({
+        url:`template/${data.id}`,
+        method: "DELETE",
+    })
+  }
   const serveApiUrl = import.meta.env.VITE_API_URL;
     const gridOptions = reactive<VxeGridProps<RowVO>>({
         border: "full",
@@ -213,5 +226,7 @@ export default () => {
     storeTemplate,
     gridOptions,
     loadTemplates,
+    updateTemplate,
+    deleteTemplate
   };
 };

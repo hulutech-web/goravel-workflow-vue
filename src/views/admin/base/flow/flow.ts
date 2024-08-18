@@ -31,6 +31,7 @@ async function initFlowChart(initData, callback) {
       "Flowchart",
       { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true },
     ],
+    
     PaintStyle: { stroke: "#1d39c4", strokeWidth: 2 }, // 设置线条颜色和宽度
     EndpointStyle: { radius: 5, fill: "#1d39c4" }, // 设置端点样式
     HoverPaintStyle: { stroke: "#c92a2a", strokeWidth: 3 }, // 鼠标悬停时的线条样式
@@ -49,14 +50,15 @@ async function initFlowChart(initData, callback) {
       if (index != -1) {
         // 获取当前被删除的节点
         const delNode = nodeList[index];
-        console.log(delNode);
         await deleteProcess({ id: delNode.id, flow_id: delNode.flow_id });
         let displayNodeList = nodeList;
         displayNodeList.splice(index, 1);
         callback(displayNodeList);
       }
     }
-
+    const editCbk = (id)=>{
+      console.log(`被编辑的节点id:${id}`)
+    }
     nodeList.forEach((node) => {
       //设置可拖动
       jsPlumbInstance.draggable(`node-${node.id}`, {
@@ -85,38 +87,6 @@ async function initFlowChart(initData, callback) {
         },
       });
 
-      // #region 之前设置错误的地方
-      // 将含有process_to属性的节点设为可连线的源节点
-      // jsPlumbInstance.makeSource(`node-${node.id}`, {
-      //   anchor: "Continuous",
-      //   connectorStyle: {
-      //     stroke: "#1d39c4",
-      //     strokeWidth: 3,
-      //     outlineStroke: "transparent",
-      //     outlineWidth: 3,
-      //   },
-      //   maxConnections: -1,
-      //   isSource: true,
-      //   allowLoopback: false,
-      //   isTarget: false,
-      //   connector: [
-      //     "Flowchart",
-      //     {
-      //       stub: [40, 60],
-      //       gap: 10,
-      //       cornerRadius: 5,
-      //       alwaysRespectStubs: true,
-      //     },
-      //   ],
-      // });
-
-      // // 假设所有节点都可作为目标节点
-      // jsPlumbInstance.makeTarget(`node-${node.id}`, {
-      //   anchor: "Continuous",
-      //   allowLoopback: false,
-      // });
-      // #endregion
-
       // 为每一个节点添加右键
       // 监听节点的右键事件
       let nodeEle = document.querySelector(`#node-${node.id}`);
@@ -125,7 +95,7 @@ async function initFlowChart(initData, callback) {
           //阻止向上传递，因为父级也注册了contextmenu事件
           event.stopPropagation();
           event.preventDefault();
-          onContextMenu(event, canDelCbk);
+          onContextMenu(event, canDelCbk,editCbk);
         });
       }
     });
@@ -189,10 +159,10 @@ async function initFlowChart(initData, callback) {
           jsPlumbInstance.connect({
             source: `node-${node.id}`,
             target: `node-${targetId}`,
-            paintStyle: { stroke: "#006e54", strokeWidth: 3 }, // 线条样式
-            endpointStyle: { fill: "#422517", radius: 4 }, // 端点样式
+            paintStyle: { stroke: "#4169E1", strokeWidth: 3 }, // 线条样式
+            endpointStyle: { fill: "#4169E1", radius: 4 }, // 端点样式
             connector: [
-              "Flowchart",
+              "Straight",
               {
                 stub: [40, 60],
                 gap: 24,
@@ -211,8 +181,8 @@ async function initFlowChart(initData, callback) {
                   location: 1, // 箭头位置，1为连接线末端
                   length: 20, // 箭头长度
                   width: 20, // 箭头宽度
-                  direction: 1, // 箭头方向，1为默认方向
-                  paintStyle: { fill: "#47ff2d", stroke: "transparent" }, // 箭头填充色和边框色
+                  direction: 2, // 箭头方向，1为默认方向
+                  paintStyle: { fill: "#4169E1", stroke: "transparent" }, // 箭头填充色和边框色
                 },
               ],
             ],
@@ -224,9 +194,9 @@ async function initFlowChart(initData, callback) {
         isSource: true,
         isTarget: true,
         Connector: ["Flowchart"],
-        paintStyle: { stroke: "#000000", strokeWidth: 90 }, // 线条样式
+        paintStyle: { stroke: "#4169E1", strokeWidth: 90 }, // 线条样式
         // 线条宽度
-        endpointStyle: { fill: "#000000", radius: 4 }, // 端点样式
+        endpointStyle: { fill: "#4169E1", radius: 4 }, // 端点样式
         options: {
           stub: 25,
         },
@@ -262,6 +232,28 @@ async function initFlowChart(initData, callback) {
       displayNodeList = nodeList;
       console.log("displayNodeList", displayNodeList);
       callback(displayNodeList);
+      // 添加逻辑，当节点被点击时，添加连接点
+      let targetId = info.targetId.replace("node-", "");
+      let targetNode = nodeList.find((node) => node.id == targetId);
+      if(targetId){
+        var common={
+          isSource:true,
+          isTarget:true,
+          Connector:["Flowchart"],
+          paintStyle:{stroke:"#000000",strokeWidth:90},//线条样式
+          endpointStyle:{fill:"#000000",radius:4},//端点样式
+          options:{
+            stub:25,
+          },
+          anchors:[jsPlumb.DynamicAnchor],//自动选择最佳连接点
+          maxConnections:-1,
+        };
+        jsPlumbInstance.addEndpoint(`node-${targetNode.id}`, {
+          uuid: `node-${targetNode.id}`,
+          anchor: "Continuous",
+          ...common,
+        })
+      }
     });
 
     jsPlumbInstance.bind("connectionDetached", function (info) {

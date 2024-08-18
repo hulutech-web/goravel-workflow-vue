@@ -27,8 +27,11 @@
                         <template #action="{ row }">
                             <div>
                                 <a-button-group>
-                                    <a-button type="primary">删除</a-button>
-                                    <a-button type="primary">编辑</a-button>
+                                    <a-popconfirm title="将同步删除模板字段，确认删除吗？" ok-text="是" cancel-text="点错了"
+                                        @confirm="deleteTemplate(row)">
+                                        <a-button type="primary">删除</a-button>
+                                    </a-popconfirm>
+                                    <a-button type="primary" @click="editTemplate(row)">编辑</a-button>
                                     <a-button type="primary" @click="loadTmplForm(row)">表单控件</a-button>
                                 </a-button-group>
                             </div>
@@ -40,6 +43,18 @@
                         </template>
                     </vxe-grid>
                 </a-card>
+                <a-modal :footer="false" v-model:open="editOpen" width="500px" title="修改模板" centered
+                    >
+                    <a-form :model="templateUpdateState" ref="templateUptRef">
+                        <a-form-item label="模板名称" name="template_name"
+                            :rules="[rulesStore.getRule('template_name') ? rulesStore.getRule('template_name') : { required: false }]">
+                            <a-input v-model:value="templateUpdateState.template_name"></a-input>
+                        </a-form-item>
+                        <a-form-item>
+                            <a-button type="primary" @click="submitUpdateTemplate">保存</a-button>
+                        </a-form-item>
+                    </a-form>
+                </a-modal>
             </a-col>
 
             <a-col :span="9">
@@ -68,14 +83,14 @@
                     <p>设计字段</p>
                 </a-card>
                 <a-card>
-                    <Formpart />
+                    <Formpart ref="formpartRef" />
                 </a-card>
             </a-col>
 
         </a-row>
 
         <a-modal v-model:open="open" title="控件配置" centered width="800px" :footer="false">
-            <Formpart :id="cid" />
+            <Formpart :id="cid" ref="formpartRef"/>
         </a-modal>
     </div>
 </template>
@@ -84,7 +99,7 @@
 
 <script setup lang="ts">
 import Formpart from './formpart.vue'
-const { loadTemplates, gridOptions, storeTemplate } = useTemplate();
+const { loadTemplates, gridOptions, storeTemplate, deleteTemplate, updateTemplate } = useTemplate();
 const { loadTemplateForm, deleteTemplateForm } = useTemplateForm();
 const router = useRouter()
 const xGrid = ref()
@@ -93,6 +108,10 @@ const rulesStore = useRulesStore();
 // 模板管理
 const templateRef = ref()
 const templateState = ref({
+    template_name: ""
+})
+const templateUpdateState = ref({
+    id: null,
     template_name: ""
 })
 const cid = ref()
@@ -107,6 +126,26 @@ const submitTemplate = async () => {
     }
     xGrid.value.commitProxy("query")
 }
+const editOpen = ref(false)
+const editTemplate = (row) => {
+    editOpen.value = true
+    templateUpdateState.value = row
+}
+const templateUptRef = ref()
+const formpartRef=ref()
+const submitUpdateTemplate = async () => {
+    try {
+        //先清空一下验证
+        templateUptRef.value.clearValidate()
+        await updateTemplate(templateUpdateState.value)
+        templateUptRef.value.resetFormField();
+    } catch (error) {
+        templateUptRef.value.validate()
+    }
+    xGrid.value.commitProxy("query")
+    formpartRef.value.loadTemplateOpts()
+}
+
 // 模板管理
 
 const gridEvent: VxeGridListeners<RowVO> = {
@@ -180,7 +219,6 @@ const loadTemplateOpts = async () => {
     const { data } = await loadTemplates()
     templateOpts.value = data
 }
-loadTemplateOpts()
 
 const delRecord = async (row) => {
     await deleteTemplateForm(row.id)

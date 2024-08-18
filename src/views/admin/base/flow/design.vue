@@ -3,7 +3,7 @@
         <a-card>
             <div>
                 <a-space>
-                    <a-button type="primary" @click="saveDesign">保存设计</a-button>
+                    <a-button type="primary" @click="saveDesign">保存位置</a-button>
                     <a-button type="primary" @click="publishDesign">发布流程</a-button>
                 </a-space>
             </div>
@@ -15,9 +15,9 @@
             <div v-for="(node, nodeId) in nodeList" :key="node.id"
                 :class="'node' + (node.process_to ? ' source-node' : '')" :id="'node-' + node.id" :style="node.style">
                 <div class="flex justify-center align-items-center node-element" :id="`menu-${node.id}`">
-                    <HuluIcon :id="`node-line-${node.id}-pointer`" fontSize="28px" :name="node.icon" />
-                    <span class="font-bold text-lg">{{ node.process_name }}</span>
-                    <a-button type="primary" style="color:#ffffff;z-index:20;" @click="setProcess(node)" shape="circle">
+                    <HuluIcon :id="`node-line-${node.id}-pointer`" fontSize="28px" :name="node.icon" color="#66CDAA"/>
+                    <span class="font-bold text-lg" style="color:#A52A2A">{{ node.process_name }}</span>
+                    <a-button type="primary" style="color:#ffffff;z-index:20;background-color: #FFA500;" @click="setProcess(node)" shape="circle">
                         <FormOutlined class="node-setting"/>
                         <!-- <SettingOutlined  /> -->
                     </a-button>
@@ -138,11 +138,11 @@ const publishDesign = async () => {
 
 
 
-
+/* 1、节点颜色 */
 .node-element {
     /* 设置节点的基础样式 */
-    background-color: #20bf6b;
-    border: 1px solid #b0e2c7;
+    background-color: #FFFACD;
+    border: 1px solid #FFFACD;
     border-radius: 5px;
     padding: 10px;
 }

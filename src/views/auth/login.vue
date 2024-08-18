@@ -8,8 +8,8 @@
             <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
                 :label-col="{ span: 6 }" :wrapper-col="{ span: 24 }" @finishFailed="onFinishFailed">
                 <p class="text-xl text-center mb-10">用户登录</p>
-                <a-form-item label="用户名" name="mobile" :rules="[{ required: true, message: '请输入手机号！' }]">
-                    <a-input v-model:value="formState.mobile">
+                <a-form-item label="工号" name="workno" :rules="[{ required: true, message: '请输入手机号！' }]">
+                    <a-input v-model:value="formState.workno">
                         <template #prefix>
                             <UserOutlined class="site-form-item-icon" />
                         </template>
@@ -70,7 +70,7 @@ let content: string[] = [
 const { login } = useUser()
 let Spin = inject('Spin')
 interface FormState {
-    mobile: string;
+    workno: string;
     password: string;
 }
 const checkCaptOk = ref(false);
@@ -78,7 +78,7 @@ const checkCaptOk = ref(false);
 
 // 市场部-销售部-员工1
 const formState = reactive<FormState>({
-    mobile: '30013',
+    workno: '30013',
     password: 'admin888',
 });
 const onFinish = async (values: any) => {
