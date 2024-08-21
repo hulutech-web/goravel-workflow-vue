@@ -30,17 +30,25 @@
                      <span class="text-gray-700">模板管理、表单控件</span>
                   </div>
                </div>
+               <template #extra>
+                  <div>
+                     <a-button type="link" @click="toPlugin">插件</a-button>
+                  </div>
+               </template>
             </a-card>
          </a-col>
          <a-col :span="12">
             <a-card title="工作流">
-               <div class="flex" v-for="(item, index) in state.flows" :key="index" @click="toWorkflow(item)">
+               <div class="flex">
+                  <div  v-for="(item, index) in state.flows" :key="index" @click="toWorkflow(item)">
                   <div @click="" class="mx-3 border border-gray-500 bg-green-400 p-4 w-64 h-32
                rounded-md hover:scale-105 transition-all duration-300 cursor-pointer">
                      <p class="text-lg text-white font-bold border-b-2 border-gray-900">{{ item.flow_name }}</p>
                      <span class="text-gray-700">编号：{{ item.flow_no }}</span>
                   </div>
                </div>
+               </div>
+               
 
             </a-card>
          </a-col>
@@ -302,6 +310,11 @@ const toWorkflow = (row) => {
 const toProc = (row) => {
    router.push({ path: `/admin/base/flow/${row.flow_id}/proc/${row.entry_id}`, query: { process_id: row.process_id, proc_id: row.id } })
 }
+
+const toPlugin = ()=>{
+   router.push({ path: "/admin/base/plugin/index" })
+}
+
 const toHistory = async (row) => {
    open.value = true
    console.log(row.id)

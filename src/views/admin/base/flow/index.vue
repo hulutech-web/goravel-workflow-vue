@@ -25,7 +25,7 @@
             <template #action="{ row }">
                 <div>
                     <a-button-group>
-                        <a-button type="primary">编辑</a-button>
+                        <a-button type="primary" @click="editFlow(row)">编辑</a-button>
                         <a-button type="primary" danger>删除</a-button>
                         <a-button type="primary" @click="startFlow(row)" :disabled="row.is_publish == false">
                             <FormatPainterOutlined />发起流程
@@ -77,6 +77,11 @@ const startFlow = (row) => {
         return
     }
     router.push({ path: `/admin/base/flow/${row.id}/initiation` })
+}
+
+
+const editFlow = (row) => {
+    router.push({ path: `/admin/base/flow/${row.id}/edit` })
 }
 </script>
 

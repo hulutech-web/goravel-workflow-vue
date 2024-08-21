@@ -78,6 +78,7 @@ declare global {
   const useLoadingStore: typeof import('../../src/store/useLoadingStore')['default']
   const useMenuStore: typeof import('../../src/store/useMenuStore')['default']
   const usePermissionStore: typeof import('../../src/store/permissons')['usePermissionStore']
+  const usePlugin: typeof import('../../src/composables/bus/usePlugin')['default']
   const useProc: typeof import('../../src/composables/bus/useProc')['default']
   const useProcess: typeof import('../../src/composables/bus/useProcess')['default']
   const useRoute: typeof import('vue-router')['useRoute']
@@ -181,6 +182,7 @@ declare module 'vue' {
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLoadingStore: UnwrapRef<typeof import('../../src/store/useLoadingStore')['default']>
     readonly useMenuStore: UnwrapRef<typeof import('../../src/store/useMenuStore')['default']>
+    readonly usePlugin: UnwrapRef<typeof import('../../src/composables/bus/usePlugin')['default']>
     readonly useProc: UnwrapRef<typeof import('../../src/composables/bus/useProc')['default']>
     readonly useProcess: UnwrapRef<typeof import('../../src/composables/bus/useProcess')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
@@ -275,6 +277,7 @@ declare module '@vue/runtime-core' {
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLoadingStore: UnwrapRef<typeof import('../../src/store/useLoadingStore')['default']>
     readonly useMenuStore: UnwrapRef<typeof import('../../src/store/useMenuStore')['default']>
+    readonly usePlugin: UnwrapRef<typeof import('../../src/composables/bus/usePlugin')['default']>
     readonly useProc: UnwrapRef<typeof import('../../src/composables/bus/useProc')['default']>
     readonly useProcess: UnwrapRef<typeof import('../../src/composables/bus/useProcess')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>

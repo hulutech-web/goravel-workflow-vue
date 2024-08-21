@@ -16,7 +16,6 @@ export default [
         },
         children: [],
       },
-      
       {
         name: "admin.base",
         path: "base",
@@ -221,6 +220,37 @@ export default [
                     order: 1000,
                     show: false,
                   },
+                },
+              },
+            ],
+          },
+          {
+            name: "admin.plugin",
+            path: "plugin",
+            component: Translation,
+            meta: {
+              title: "插件管理",
+              menu: { title: "插件管理", icon: "HddOutlined", order: 1000 },
+            },
+            children: [
+              {
+                name: "admin.plugin.index",
+                path: "index",
+                component: () =>
+                  import("@/views/admin/base/plugin/index.vue"),
+                meta: {
+                  title: "插件列表",
+                  menu: { title: "插件列表", icon: "HddOutlined", order: 1000 },
+                },
+              },
+              {
+                name: "admin.plugin.make",
+                path: "make",
+                component: () =>
+                  import("@/views/admin/base/plugin/make.vue"),
+                meta: {
+                  title: "设计插件",
+                  menu: { title: "设计插件", icon: "HddOutlined", order: 1000,show:false },
                 },
               },
             ],
