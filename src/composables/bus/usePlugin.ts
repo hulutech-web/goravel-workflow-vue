@@ -12,9 +12,16 @@ export default () => {
     });
   };
 
-  const choosePlugins = async (data) => {
+  const installPlugin = async (data) => {
     return await http.request({
-      url: `flow/choose_plugins`,
+      url: `flow/install_plugin`,
+      method: "POST",
+      data: data,
+    });
+  };
+  const uninstallPlugin = async (data) => {
+    return await http.request({
+      url: `flow/uninstall_plugin`,
       method: "POST",
       data: data,
     });
@@ -218,6 +225,7 @@ export default () => {
   return {
     gridOptions,
     loadPlugins,
-    choosePlugins,
+    installPlugin,
+    uninstallPlugin,
   };
 };

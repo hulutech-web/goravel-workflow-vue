@@ -30,11 +30,6 @@
                      <span class="text-gray-700">模板管理、表单控件</span>
                   </div>
                </div>
-               <template #extra>
-                  <div>
-                     <a-button type="link" @click="toPlugin">插件</a-button>
-                  </div>
-               </template>
             </a-card>
          </a-col>
          <a-col :span="12">

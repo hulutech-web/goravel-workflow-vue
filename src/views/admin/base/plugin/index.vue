@@ -29,8 +29,8 @@
                         <template #actions>
                             <div>
                                 <a-button type="link" ghost @click="designPlugin(item)">设计</a-button>
-                                <a-button type="link" @click="appFlow(item)">流程</a-button>
-                                <a-button type="link" ghost @click="submitFlow">应用到流程</a-button>
+                                <a-button type="link" @click="install(item)">安装</a-button>
+                                <a-button type="link" @click="uninstall(item)">卸载</a-button>
                             </div>
                         </template>
                     </a-card>
@@ -51,9 +51,11 @@
 </template>
 
 <script setup lang='ts'>
-const { loadPlugins, choosePlugins } = usePlugin()
+const { loadPlugins, installPlugin, uninstallPlugin } = usePlugin()
 const { gridOptions } = useFlow()
 const router = useRouter()
+const route = useRoute()
+const flow_id = ref(route.query.id)
 const plugins = ref([])
 const init = async () => {
     const { data } = await loadPlugins()
@@ -76,28 +78,31 @@ const gridEvent: VxeGridListeners<RowVO> = {
     }
 }
 const submitState = ref({
-    flow_id: null,
-    plugin_ids: []
+    flow_id: +flow_id.value,
+    plugin_id: null
 })
-const appFlow = (item: any) => {
-    console.log(item.id)
-    open.value = true
-    submitState.value.plugin_ids = [item.id]
+const install = async (item: any) => {
+    submitState.value.plugin_id = item.id
+    const { data } = await installPlugin(submitState.value)
+}
+
+const uninstall = async (item: any) => {
+    submitState.value.plugin_id = item.id
+    const { data } = await uninstallPlugin(submitState.value)
 }
 const bindFlow = (row: any) => {
     submitState.value.flow_id = row.id
     open.value = false
     console.log(submitState.value)
 }
-const submitFlow = async () => {
-    const { data } = await choosePlugins(submitState.value)
-}
+
 
 const designPlugin = (item: any) => {
     router.push({
         path: '/admin/base/plugin/make',
         query: {
-            id: item.id
+            plugin_id: item.id,
+            flow_id: flow_id.value
         }
     })
 }

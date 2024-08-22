@@ -36,6 +36,14 @@ export default () => {
             data:{flow_id:data.flow_id}
         })
     }
+
+    const getFlowProcesses=async(flow_id)=>{
+        return await http.request({
+            url:`process/list`,
+            method:"POST",
+            data:{flow_id:flow_id}
+        })
+    }
     const serveApiUrl = import.meta.env.VITE_API_URL;
     const gridOptions = reactive<VxeGridProps<RowVO>>({
         border: "full",
@@ -257,6 +265,7 @@ export default () => {
         getCurrCond,
         loadAttributes,
         deleteProcess,
-        updateProcess
+        updateProcess,
+        getFlowProcesses
     };
 };

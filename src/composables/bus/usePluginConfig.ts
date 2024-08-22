@@ -5,67 +5,27 @@ const storage = useStorage();
 
 export default () => {
   // 方法
-  const loadFlows = async () => {
+  const storePluginConfig = async (data) => {
     return await http.request({
-      url: `flow`,
-      method: "GET",
-    });
-  };
-  const loadFlowList = async () => {
-    return await http.request({
-      url: `flow/list`,
-      method: "GET",
-    });
-  };
-  const loadFlowDesign = async (id) => {
-    return await http.request({
-      url: `flow/flowchart/${id}`,
-      method: "GET",
-    });
-  };
-  const storeFlow = async (data) => {
-    return await http.request({
-      url: `flow`,
+      url: `plugin/store_plugin_config`,
       method: "POST",
-      data: data,
+      data:data
     });
   };
-
-  const showFlow = async (id) => {
+  const getPluginConfig = async (data) => {
     return await http.request({
-      url: `flow/${id}`,
-      method: "GET",
-    });
-  };
-  const updateFlow = async (data) => {
-    return await http.request({
-      url: `flow/${data.id}`,
-      method: "PUT",
-      data: data,
-    });
-  };
-  const createFlow = async () => {
-    return await http.request({
-      url: `flow/create`,
-      method: "GET",
-    });
-  };
-
-  const loadFlowTemplateform = async (flow_id) => {
-    return await http.request({
-      url: `flow/templateform`,
+      url: `plugin/get_plugin_config`,
       method: "POST",
-      data: {flow_id:flow_id},
+      data:data
     });
   };
-  const publishFlow = async (data) => {
+  const getAllPluginConfig = async (data) => {
     return await http.request({
-      url: `flow/publish`,
+      url: `plugin/getall_plugin_config`,
       method: "POST",
-      data: data,
+      data:data
     });
   };
-
   const serveApiUrl = import.meta.env.VITE_API_URL;
   const gridOptions = reactive<VxeGridProps<RowVO>>({
     border: "full",
@@ -74,6 +34,7 @@ export default () => {
     showOverflow: true,
     keepSource: true,
     autoResize: true,
+
     expandConfig: {
       trigger: "row",
       showIcon: true,
@@ -86,7 +47,7 @@ export default () => {
       titleAlign: "right",
       items: [
         {
-          field: "flow_name",
+          field: "name",
           title: "名称",
           span: 6,
           titlePrefix: {
@@ -156,14 +117,7 @@ export default () => {
         // {code: "insert_actived", name: "快捷新增", status: "primary"},
         // {code: "delete", name: "直接删除", status: "danger"},
         // {code: "mark_cancel", name: "删除/取消"},
-        // {
-        //   code: "save",
-        //   name: "快捷改价",
-        //   status: "success",
-        //   click: () => {
-        //     console.log("save");
-        //   },
-        // },
+        // {code: "save", name: "保存", status: "success"},
       ],
       refresh: true, // 显示刷新按钮
       import: false, // 显示导入按钮
@@ -200,7 +154,7 @@ export default () => {
             });
 
             const data = http.request({
-              url: `flow?pageSize=${page.pageSize}&currentPage=${
+              url: `emp?pageSize=${page.pageSize}&currentPage=${
                 page.currentPage
               }&${XEUtils.serialize(queryParams)}`,
               method: "GET",
@@ -208,65 +162,37 @@ export default () => {
             resolve(data);
           });
         },
-        save: ({ body }) => {
-          return new Promise((resolve, reject) => {
-            //删除item中的#字段
-            let postData = body.updateRecords.map((item) => {
-              return {
-                id: item.ID,
-                price: +item.price,
-              };
-            });
-            const data = batchUpdate(postData);
-            resolve(data);
-          });
-        },
       },
     },
     columns: [
-      { field: "id", title: "id" },
-      { field: "flow_no", title: "流程编号" },
+      { field: "id", title: "id", width: 100 },
       // 配置日期选择器
       {
-        field: "template_id",
-        title: "模板ID",
+        field: "name",
+        title: "名称",
         sortable: true,
       },
       {
-        field: "flow_name",
-        title: "流程名称",
+        field: "workno",
+        title: "工号",
         sortable: true,
       },
-
       {
-        field: "type_id",
-        title: "类型ID",
+        field: "email",
+        title: "邮箱",
+        sortable: true,
       },
       {
-        field: "is_publish",
-        title: "是否发布",
+        field: "Dept",
+        title: "部门",
+        sortable: true,
         slots: {
-          default: "publish",
+          default: "dept",
         },
       },
       {
-        field: "is_show",
-        title: "是否显示",
-        slots: {
-          default: "show",
-        },
-      },
-      {
-        field: "design",
-        title: "流程设计",
-        slots: {
-          default: "design",
-        },
-      },
-      {
-        field: "action",
         title: "操作",
-        width: 600,
+        sortable: true,
         slots: {
           default: "action",
         },
@@ -286,7 +212,7 @@ export default () => {
       no: [{ required: true, message: "必填" }],
     },
     editConfig: {
-      trigger: "click", // 设置为 'click' 表示点击单元格时自动进入编辑状态
+      trigger: "click",
       mode: "row",
       showStatus: true,
       showUpdateStatus: true,
@@ -294,16 +220,11 @@ export default () => {
       autoClear: true,
     },
   });
+
   return {
     gridOptions,
-    loadFlows,
-    showFlow,
-    storeFlow,
-    updateFlow,
-    createFlow,
-    loadFlowDesign,
-    publishFlow,
-    loadFlowList,
-    loadFlowTemplateform,
+    storePluginConfig,
+    getPluginConfig,
+    getAllPluginConfig
   };
 };

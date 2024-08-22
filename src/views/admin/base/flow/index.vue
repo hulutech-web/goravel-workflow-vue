@@ -30,6 +30,9 @@
                         <a-button type="primary" @click="startFlow(row)" :disabled="row.is_publish == false">
                             <FormatPainterOutlined />发起流程
                         </a-button>
+                        <a-button type="primary" @click="startPlugin(row)">
+                            <ApiOutlined /> 插件功能
+                        </a-button>
                     </a-button-group>
                 </div>
             </template>
@@ -82,6 +85,9 @@ const startFlow = (row) => {
 
 const editFlow = (row) => {
     router.push({ path: `/admin/base/flow/${row.id}/edit` })
+}
+const startPlugin=(row)=>{
+    router.push({path:`/admin/base/plugin/index`,query:{id:row.id}})
 }
 </script>
 

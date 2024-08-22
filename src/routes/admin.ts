@@ -230,7 +230,8 @@ export default [
             component: Translation,
             meta: {
               title: "插件管理",
-              menu: { title: "插件管理", icon: "HddOutlined", order: 1000 },
+              menu: { title: "插件管理", icon: "HddOutlined", order: 1000,show:false},
+              show:false,
             },
             children: [
               {

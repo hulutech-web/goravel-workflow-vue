@@ -5,7 +5,7 @@ const storage = useStorage();
 
 export default () => {
   // 方法
-  const loadDepts = async (id) => {
+  const loadDepts = async () => {
     return await http.request({
       url: `dept`,
       method: "GET",
@@ -19,7 +19,12 @@ export default () => {
       data: data,
     });
   };
-
+  const loadDeptList = async () => {
+    return await http.request({
+      url: `dept/list`,
+      method: "GET",
+    });
+  };
   const setDirector = async (data) => {
     return await http.request({
       url: `dept/binddirector`,
@@ -236,5 +241,6 @@ export default () => {
     loadDepts,
     setManager,
     setDirector,
+    loadDeptList, // 获取部门列表
   };
 };
